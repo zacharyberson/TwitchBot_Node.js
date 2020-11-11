@@ -1,1 +1,1 @@
-# ZeeBotServer
+# TwitchBot_Node.js
