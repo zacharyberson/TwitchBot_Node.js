@@ -1,5 +1,6 @@
 const { client } = require('./clientHelper.js');
-const commands = require('./commandParser.js');
+const { intervalMessages } = require('./messageScheduler.js');
+const commands = require('./messageParser.js');
 
 // Register our event handlers (defined below)
 client.on('message', onMessageHandler);
@@ -16,10 +17,15 @@ function onMessageHandler(target, context, msg, self) {
     const command = msg.trim();
     console.log('> ' + msg);
 
-    commands.processCommand(target, command);
+    commands.processCommand(target, context, command);
 }
 
 // Called every time the bot connects to Twitch chat
 function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+
+    //schedule timer messages
+    setTimeout(()=>{
+        intervalMessages(client.lastJoined);
+    }, 1000);
 }
