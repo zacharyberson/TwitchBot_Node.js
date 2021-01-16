@@ -1,9 +1,9 @@
-import client from './clientHelper.js';
-import messages from './messages.js';
+const { client } = require('./clientHelper.js');
+const { messages } = require('./messages.js');
 
 const intervals = [];
 
-export const intervalMessage = (target, messageObj) => {
+const intervalMessage = (target, messageObj) => {
     const interval = setInterval(()=>{
         client.say(target, messageObj.message);
     }, messageObj.interval);
@@ -11,13 +11,13 @@ export const intervalMessage = (target, messageObj) => {
     intervals.push(interval);
 }
 
-export const intervalMessages = (target) => {
+exports.intervalMessages = (target) => {
     messages.forEach((messageObj)=>{
         intervalMessage(target, messageObj);
     });
 }
 
-export const stopIntervals = () => {
+exports.stopIntervals = () => {
     intervals.forEach((interval)=> {
         clearTimeout(interval);
     });
