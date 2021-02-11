@@ -1,6 +1,8 @@
 const { client } = require('./clientHelper.js');
 const { intervalMessages } = require('./messageScheduler.js');
 const commands = require('./messageParser.js');
+const writer = require('fs');
+const { DateUtil } = require('./utility.js');
 
 // Register our event handlers (defined below)
 client.on('message', onMessageHandler);
@@ -11,6 +13,13 @@ client.connect();
 
 // Called every time a message comes in
 function onMessageHandler(channel, userstate, msg, self) {
+    const message = `(${DateUtil.getDateString()}) ${userstate.username}: ${msg}\n`;
+    writer.appendFile('./log.txt', message, (err) => {
+        if(err) {
+            console.log(err);
+        }
+    });
+
     if (self) { return; } // Ignore messages from the bot
 
     // Remove whitespace from chat message
