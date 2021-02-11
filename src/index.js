@@ -1,4 +1,11 @@
-process.on('uncaughtException', err=> {
+const writer = require('fs');
+
+process.on('uncaughtException', err => {
+    writer.appendFile('./log.txt', `>>There was an uncaught error: ${err.message}\n`, (err2) => {
+        if(err2) {
+            console.log(err2);
+        }
+    });
     console.error('There was an uncaught error', err);
     process.exit(1);
 })
